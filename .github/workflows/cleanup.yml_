@@ -1,24 +1,27 @@
-name: Cleanup Old Actions Runs
+# SPDX-License-Identifier: MIT
+# Copyright (C) 2026 VIKINGYFY
+
+name: Auto-Clean
 
 on:
   schedule:
     # 每月 1 号 UTC 00:00 执行 (北京时间 08:00)
     - cron: '0 0 1 * *'
+  #手动清理
   workflow_dispatch:
 
-permissions:
-  actions: write
-  contents: read
+permissions: write-all
 
 jobs:
-  cleanup:
+  auto_clean:
     runs-on: ubuntu-latest
     steps:
-      - name: Delete workflow runs
-        uses: Mattraks/delete-workflow-runs@v2
+      - name: Delete old Releases and Workflows
+        uses: ophub/delete-releases-workflows@main
         with:
-          token: ${{ github.token }}
-          repository: ${{ github.repository }}
-          retain_days: 7
-          keep_minimum_runs: 3
-          delete_run_by_conclusion_pattern: "success,failure,cancelled,skipped"
+          gh_token: ${{secrets.GITHUB_TOKEN}}
+          delete_releases: true
+          releases_keep_latest: 0
+          delete_tags: true
+          delete_workflows: true
+          workflows_keep_day: 0
