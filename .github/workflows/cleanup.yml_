@@ -2,7 +2,8 @@ name: Cleanup Old Actions Runs
 
 on:
   schedule:
-    - cron: '0 3 * * *'
+    # 每月 1 号 UTC 00:00 执行 (北京时间 08:00)
+    - cron: '0 0 1 * *'
   workflow_dispatch:
 
 permissions:
